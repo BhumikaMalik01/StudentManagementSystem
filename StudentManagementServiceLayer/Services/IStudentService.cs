@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StudentManagementDomainLayer.Models;
+using StudentManagementServiceLayer.Views;
 
 namespace StudentManagementServiceLayer.Services
 {
     public interface IStudentService
     {
+        IList<Student> GetStudentList();
+
+        Student SearchStudent(int empid);
+
+        ResponseModel SaveStudent(Student stu);
     }
 }
