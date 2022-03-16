@@ -1,15 +1,23 @@
+
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using Microsoft.Extensions.Configuration;
+//using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.Hosting;
+//using Microsoft.Extensions.Logging;
+//using Microsoft.OpenApi.Models;
+//using StudentManagementRepositoryLayer;
+//using StudentManagementServiceLayer.Services;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using StudentManagementRepositoryLayer;
+using StudentManagementServiceLayer.Services;
 
 namespace StudentManagementSystemAppWebAPI
 {
@@ -27,6 +35,11 @@ namespace StudentManagementSystemAppWebAPI
         {
 
             services.AddControllers();
+
+            services.AddDbContext<ApplicationContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ConStr")));
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IStudentMarksService, StudentMarksService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentManagementSystemAppWebAPI", Version = "v1" });
