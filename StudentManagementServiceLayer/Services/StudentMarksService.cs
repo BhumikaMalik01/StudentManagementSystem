@@ -8,7 +8,7 @@ namespace StudentManagementServiceLayer.Services
 {
     public class StudentMarksService : IStudentMarksService
     {
-        private readonly ApplicationContext _appContext;
+        public ApplicationContext _appContext;
         public StudentMarksService(ApplicationContext appContext)
         {
             _appContext = appContext;
