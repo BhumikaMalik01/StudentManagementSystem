@@ -9,8 +9,12 @@ namespace StudentManagementServiceLayer.Services
     {
         IList<Student> GetStudentList();
 
-        Student SearchStudent(int empid);
+        Student SearchStudent(int stuId);
 
-        ResponseModel SaveStudent(Student stu);
+        public void AddStudent(Student stu);
+
+        ResponseModel DeleteStudent(int stuId);
+
+        void UpdateStudent(Student stu);
     }
 }
