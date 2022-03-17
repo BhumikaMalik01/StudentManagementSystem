@@ -1,16 +1,19 @@
 ﻿using StudentManagementDomainLayer.Models;
 using StudentManagementServiceLayer.Views;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 namespace StudentManagementServiceLayer.Services
 {
     public interface IStudentMarksService
     {
-        IList<StudentMarks> GetStudentMarksList();
+        Task<IList<StudentMarks>> GetStudentMarksList();
 
-        StudentMarks SearchStudentMarks(int stuId);
+        void AddStudentMarks(StudentMarks stuMarks);
 
-        ResponseModel SaveStudentMarks(StudentMarks stuMarks);
+        StudentMarks SearchStudentMarks(int sem);
+
+        void UpdateStudentMarks(StudentMarks stuMarks);
+
     }
 }

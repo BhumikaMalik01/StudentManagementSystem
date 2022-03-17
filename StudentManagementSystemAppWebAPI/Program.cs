@@ -18,6 +18,12 @@ namespace StudentManagementSystemAppWebAPI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+
+            .ConfigureLogging(logging =>
+            {
+                logging.AddFile("AppLogs/StudentOperationsLogs{Date}.txt");
+            })
+
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

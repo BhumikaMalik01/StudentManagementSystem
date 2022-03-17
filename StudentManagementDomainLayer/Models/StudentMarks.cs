@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentManagementDomainLayer.Models
 {
-    [Keyless]
     public class StudentMarks
     {
+        [Key]
+        public int SrNo { get; set; }
+
         [ForeignKey("Student")]
         public int StudentID { get; set; }
 

@@ -4,6 +4,7 @@ using StudentManagementServiceLayer.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StudentManagementServiceLayer.Services
 {
@@ -15,13 +16,13 @@ namespace StudentManagementServiceLayer.Services
             _appContext = appContext;
         }
 
-        public IList<Student> GetStudentList()
+        public async Task<IList<Student>> GetStudentList()
         {
             IList<Student> stud;
 
             try
             {
-
+                await Task.Delay(1000);
                 stud = _appContext.Set<Student>().ToList();
             }
             catch (Exception ex)
@@ -35,6 +36,7 @@ namespace StudentManagementServiceLayer.Services
 
         public Student SearchStudent(int stuId)
         {
+
             Student stud;
 
             try
@@ -70,16 +72,44 @@ namespace StudentManagementServiceLayer.Services
             {
                 model.ISuccess = false;
                 model.Message = " Error:" + ex.Message;
-
             }
             return model;
         }
 
         public void UpdateStudent(Student stu)
         {
-            _appContext.Update<Student>(stu);
-            _appContext.SaveChanges();
+            //Student stud;
+            //_appContext.
+            //if(stu.StudentFirstName.Find<Student>())
+            //{
+            //    _appContext.Update<Student>(stu);
+            //    _appContext.SaveChanges();
+            //}
+
+            //if
+            
         }
+
+
+        //public async Task<Student> EditStudent(int id, UpdateExpenseModel model)
+        //{
+        //    _appContext.FirstOrDefault(x => x.Id == id);
+
+        //    if (expense == null)
+        //    {
+        //        throw new NotFoundException("Expense is not found");
+        //    }
+
+        //    expense.Amount = model.Amount;
+        //    expense.Comment = model.Comment;
+        //    expense.Description = model.Description;
+        //    expense.Date = model.Date;
+
+        //    //await _appContext.CommitAsync();
+        //    return expense;
+        //}
+
+
 
 
         public void AddStudent(Student stu)
@@ -88,5 +118,9 @@ namespace StudentManagementServiceLayer.Services
             _appContext.SaveChanges();
         }
 
+        public void EditStudent(Student stu)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StudentManagementDomainLayer.Models;
 using StudentManagementServiceLayer.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace StudentManagementSystemAppWebAPI.Controllers
 {
@@ -11,44 +13,58 @@ namespace StudentManagementSystemAppWebAPI.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _stuService;
-        public StudentController(IStudentService appContext)
+        private readonly ILogger<StudentController> _Logger;
+        public StudentController(IStudentService appContext, ILogger<StudentController> Logger)
         {
+            _Logger = Logger;
             _stuService = appContext;
         }
 
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetAllStudents()
+        public async Task<IActionResult> GetAllStudents()
         {
+            _Logger.LogInformation("student endpoint starts");
+            var student = await _stuService.GetStudentList();
             try
             {
-                var student = _stuService.GetStudentList();
 
                 if (student == null) return NotFound();
 
-                return Ok(student);
+                _Logger.LogInformation("student endpoint completed");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
                 return BadRequest();
             }
+            return Ok(student);
         }
 
 
         [HttpDelete]
 
         [Route("[action]")]
-        public IActionResult DeleteStudentByEmpId(int id)
+        public IActionResult DeleteStudentByEmpId(int stuid)
         {
+            _Logger.LogInformation("student endpoint starts");
 
             try
             {
-                var responseModel = _stuService.DeleteStudent(id);
+
+                var responseModel = _stuService.DeleteStudent(stuid);
                 if (responseModel == null) return NotFound();
+                _Logger.LogInformation("student endpoint completed");
+
                 return Ok(responseModel);
             }
             catch (Exception ex)
             {
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
                 return BadRequest();
             }
         }
@@ -56,19 +72,26 @@ namespace StudentManagementSystemAppWebAPI.Controllers
 
 
         [HttpGet]
-        [Route("[action]/empid")]
-        public Student SearcStudentById(int empid)
+        [Route("[action]/stuid")]
+        public ActionResult SearcStudentById(int stuid)
         {
+            _Logger.LogInformation("student endpoint starts");
             Student stu;
             try
             {
-                stu = _stuService.SearchStudent(empid);
+                stu = _stuService.SearchStudent(stuid);
+
+                _Logger.LogInformation("student endpoint completed");
             }
-            catch (Exception e)
+
+            catch (Exception ex)
             {
-                throw e;
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
+                return BadRequest("Not Found");
             }
-            return stu;
+            return Ok(stu);
         }
 
 
@@ -97,11 +120,24 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         //}
 
 
-
-        [HttpPut(nameof(AddStudentById))]
+        //[HttpPut(nameof(AddStudentById))]
+        [HttpPost(nameof(AddStudentById))]
         public ActionResult AddStudentById(Student stu)
         {
-            _stuService.AddStudent(stu);
+            _Logger.LogInformation("student endpoint starts");
+            try
+            {
+
+                _stuService.AddStudent(stu);
+
+                _Logger.LogInformation("student endpoint completed");
+            }
+            catch (Exception ex)
+            {
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
+            }
             return Ok("Student Added");
         }
 
@@ -114,14 +150,24 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         }
 
 
-        //public ActionResult GetStudent()
+
+        //[HttpPut]
+        //public ActionResult EditStudent(int stuId, Student stu)
         //{
-        //    var stu = _stuService.GetStudentList();
-        //    if(stu != null)
+        //    try
         //    {
-        //        return Ok(stu);
+        //        var student = from c in db.Student
+        //                      where c.CustomerID == stuId
+        //                      select c;
+
+        //        stu.StudentID = stuId;
+        //        _stuService.UpdateStudent(stu);
+        //        return Ok(student);
         //    }
-        //    return BadRequest("NotFound");
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest("Not Found");
+        //    }
         //}
     }
 }
