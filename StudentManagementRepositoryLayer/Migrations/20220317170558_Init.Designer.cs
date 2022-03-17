@@ -9,7 +9,7 @@ using StudentManagementRepositoryLayer;
 namespace StudentManagementRepositoryLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220316193036_Init")]
+    [Migration("20220317170558_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,11 @@ namespace StudentManagementRepositoryLayer.Migrations
 
             modelBuilder.Entity("StudentManagementDomainLayer.Models.StudentMarks", b =>
                 {
+                    b.Property<int>("SrNo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("StuMarks")
                         .HasColumnType("int");
 
@@ -52,6 +57,8 @@ namespace StudentManagementRepositoryLayer.Migrations
 
                     b.Property<int>("StudentID")
                         .HasColumnType("int");
+
+                    b.HasKey("SrNo");
 
                     b.ToTable("stuMarks");
                 });

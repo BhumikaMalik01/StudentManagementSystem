@@ -25,12 +25,15 @@ namespace StudentManagementRepositoryLayer.Migrations
                 name: "stuMarks",
                 columns: table => new
                 {
+                    SrNo = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     StudentID = table.Column<int>(type: "int", nullable: false),
                     StuMarks = table.Column<int>(type: "int", nullable: false),
                     StuSem = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_stuMarks", x => x.SrNo);
                 });
         }
 
