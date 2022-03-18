@@ -13,7 +13,9 @@ namespace StudentManagementServiceLayer.Services
 
         StudentMarks SearchStudentMarks(int sem);
 
-        void UpdateStudentMarks(StudentMarks stuMarks);
+        bool UpdateStudent(StudentMarks stuMarks);
+
+        ResponseModel DeleteStudentMarks(int stuId);
 
     }
 }

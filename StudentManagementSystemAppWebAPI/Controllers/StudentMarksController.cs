@@ -64,23 +64,15 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         }
 
 
-        [HttpPut(nameof(UpdateStudentMarks))]
-        public ActionResult UpdateStudentMarks(StudentMarks stu)
-        {
-            _stuService.UpdateStudentMarks(stu);
-            return Ok("Student Marks Updated");
-        }
-
-
         [HttpGet]
-        [Route("[action]/sem")]
-        public ActionResult SearchStudentBySem(int sem)
+        [Route("[action]")]
+        public ActionResult SearchStudent(int stuid)
         {
             _Logger.LogInformation("student endpoint starts");
             StudentMarks stud;
             try
             {
-                stud = _stuService.SearchStudentMarks(sem);
+                stud = _stuService.SearchStudentMarks(stuid);
                 _Logger.LogInformation("student endpoint completed");
             }
 
@@ -94,5 +86,50 @@ namespace StudentManagementSystemAppWebAPI.Controllers
             return Ok(stud);
         }
 
+        [HttpPut(nameof(UpdateStudentMarks))]
+        public ActionResult UpdateStudentMarks(StudentMarks course)
+        {
+            _Logger.LogInformation("student endpoint starts");
+            bool stu;
+            try
+            {
+                stu = _stuService.UpdateStudent(course);
+                _Logger.LogInformation("student endpoint completed");
+                return Ok(stu);
+            }
+            catch(Exception ex)
+            {
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
+                return BadRequest();
+            }
+        }
+
+
+        [HttpDelete]
+
+        [Route("[action]")]
+        public IActionResult DeleteStudentByStuID(int stuid)
+        {
+            _Logger.LogInformation("student endpoint starts");
+
+            try
+            {
+
+                var responseModel = _stuService.DeleteStudentMarks(stuid);
+                if (responseModel == null) return NotFound();
+                _Logger.LogInformation("student endpoint completed");
+
+                return Ok(responseModel);
+            }
+            catch (Exception ex)
+            {
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
+                return BadRequest();
+            }
+        }
     }
 }

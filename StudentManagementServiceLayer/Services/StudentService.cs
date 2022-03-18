@@ -55,13 +55,13 @@ namespace StudentManagementServiceLayer.Services
 
 
 
-        public ResponseModel DeleteStudent(int empid)
+        public ResponseModel DeleteStudent(int stuid)
         {
             ResponseModel model = new ResponseModel();
             try
             {
-                var emp = SearchStudent(empid);
-                _appContext.Remove<Student>(emp);
+                var stu = SearchStudent(stuid);
+                _appContext.Remove<Student>(stu);
 
                 _appContext.SaveChanges();
                 model.ISuccess = true;
@@ -76,51 +76,32 @@ namespace StudentManagementServiceLayer.Services
             return model;
         }
 
-        public void UpdateStudent(Student stu)
-        {
-            //Student stud;
-            //_appContext.
-            //if(stu.StudentFirstName.Find<Student>())
-            //{
-            //    _appContext.Update<Student>(stu);
-            //    _appContext.SaveChanges();
-            //}
 
-            //if
-            
-        }
-
-
-        //public async Task<Student> EditStudent(int id, UpdateExpenseModel model)
-        //{
-        //    _appContext.FirstOrDefault(x => x.Id == id);
-
-        //    if (expense == null)
-        //    {
-        //        throw new NotFoundException("Expense is not found");
-        //    }
-
-        //    expense.Amount = model.Amount;
-        //    expense.Comment = model.Comment;
-        //    expense.Description = model.Description;
-        //    expense.Date = model.Date;
-
-        //    //await _appContext.CommitAsync();
-        //    return expense;
-        //}
-
-
-
-
-        public void AddStudent(Student stu)
+            public void AddStudent(Student stu)
         {
             _appContext.Add<Student>(stu);
             _appContext.SaveChanges();
         }
 
-        public void EditStudent(Student stu)
+
+        public  bool EditStudent(Student stu)
         {
-            throw new NotImplementedException();
+            var student = SearchStudent(stu.StudentID);
+
+            if(student != null)
+            {
+                student.StudentCourse = stu.StudentCourse;
+                _appContext.Update<Student>(stu);
+            }
+            
+            if (_appContext.SaveChanges() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

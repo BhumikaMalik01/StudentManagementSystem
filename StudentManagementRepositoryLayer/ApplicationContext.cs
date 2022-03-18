@@ -11,6 +11,7 @@ namespace StudentManagementRepositoryLayer
         }
 
         DbSet<Student> Student { get; set; }
+
         DbSet<StudentMarks> stuMarks { get; set; }
     }
 }

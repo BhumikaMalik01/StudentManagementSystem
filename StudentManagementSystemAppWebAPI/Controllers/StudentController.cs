@@ -6,6 +6,7 @@ using StudentManagementServiceLayer.Services;
 using System;
 using System.Threading.Tasks;
 
+
 namespace StudentManagementSystemAppWebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,6 +15,7 @@ namespace StudentManagementSystemAppWebAPI.Controllers
     {
         private readonly IStudentService _stuService;
         private readonly ILogger<StudentController> _Logger;
+
         public StudentController(IStudentService appContext, ILogger<StudentController> Logger)
         {
             _Logger = Logger;
@@ -95,32 +97,6 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         }
 
 
-        //[HttpPost]
-        //[Route("[action]")]
-        //public IActionResult AddStudentById(Student StudentData)
-        //{
-
-        //    try
-        //    {
-
-        //        var responseModel = _stuService.AddStudent(StudentData);
-
-        //        if (responseModel == null) return NotFound();
-
-        //        return Ok(responseModel);
-
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-
-        //        return BadRequest();
-        //    }
-
-        //}
-
-
-        //[HttpPut(nameof(AddStudentById))]
         [HttpPost(nameof(AddStudentById))]
         public ActionResult AddStudentById(Student stu)
         {
@@ -142,32 +118,24 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         }
 
 
-        [HttpPut(nameof(UpdateStudentDetail))]
-        public ActionResult UpdateStudentDetail(Student stu)
+        [HttpPut(nameof(EditStudent))]
+        public ActionResult EditStudent(Student course)
         {
-            _stuService.UpdateStudent(stu);
-            return Ok("Student Updated");
+            _Logger.LogInformation("student endpoint starts");
+            bool stu;
+            try
+            {
+                stu = _stuService.EditStudent(course);
+                _Logger.LogInformation("student endpoint completed");
+                return Ok(stu);
+            }
+            catch (Exception ex)
+            {
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.Message);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex.InnerException);
+                _Logger.LogError("exception occured;ExceptionDetail:" + ex);
+                return BadRequest();
+            }
         }
-
-
-
-        //[HttpPut]
-        //public ActionResult EditStudent(int stuId, Student stu)
-        //{
-        //    try
-        //    {
-        //        var student = from c in db.Student
-        //                      where c.CustomerID == stuId
-        //                      select c;
-
-        //        stu.StudentID = stuId;
-        //        _stuService.UpdateStudent(stu);
-        //        return Ok(student);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest("Not Found");
-        //    }
-        //}
     }
 }

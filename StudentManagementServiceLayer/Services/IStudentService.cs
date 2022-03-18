@@ -16,8 +16,6 @@ namespace StudentManagementServiceLayer.Services
 
         ResponseModel DeleteStudent(int stuId);
 
-        void UpdateStudent(Student stu);
-
-        void EditStudent(Student stu);
+        public bool EditStudent(Student stu);
     }
 }
