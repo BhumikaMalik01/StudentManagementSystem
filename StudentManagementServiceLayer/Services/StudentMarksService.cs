@@ -16,11 +16,6 @@ namespace StudentManagementServiceLayer.Services
             _appContext = appContext;
         }
 
-        //public StudentMarks AddStudentMarks(int stuId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public async Task<IList<StudentMarks>> GetStudentMarksList()
         {
             IList<StudentMarks> studMarks;
@@ -45,22 +40,34 @@ namespace StudentManagementServiceLayer.Services
             _appContext.SaveChanges();
         }
 
-
-
-
-        public void UpdateStudentMarks(StudentMarks stuMarks)
+        public bool UpdateStudent(StudentMarks stu)
         {
-            _appContext.Update<StudentMarks>(stuMarks);
-            _appContext.SaveChanges();
+            var student = SearchStudentMarks(stu.StudentID);
+
+            if (student != null)
+            {
+                student.StuMarks = stu.StuMarks;
+                _appContext.Update<StudentMarks>(stu);
+            }
+
+            if (_appContext.SaveChanges() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public StudentMarks SearchStudentMarks(int sem)
+
+        public StudentMarks SearchStudentMarks(int stuid)
         {
             StudentMarks stud;
 
             try
             {
-                stud = _appContext.Find<StudentMarks>(sem);
+                stud = _appContext.Find<StudentMarks>(stuid);
 
             }
             catch (Exception ex)
@@ -68,6 +75,28 @@ namespace StudentManagementServiceLayer.Services
                 throw ex;
             }
             return stud;
+        }
+
+
+        public ResponseModel DeleteStudentMarks(int stuid)
+        {
+            ResponseModel model = new ResponseModel();
+            try
+            {
+                var stud = SearchStudentMarks(stuid);
+                _appContext.Remove<StudentMarks>(stud);
+
+                _appContext.SaveChanges();
+                model.ISuccess = true;
+                model.Message = " Student marks records removed succesfully";
+            }
+
+            catch (Exception ex)
+            {
+                model.ISuccess = false;
+                model.Message = " Error:" + ex.Message;
+            }
+            return model;
         }
     }
 }
