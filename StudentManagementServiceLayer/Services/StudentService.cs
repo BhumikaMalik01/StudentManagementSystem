@@ -65,7 +65,7 @@ namespace StudentManagementServiceLayer.Services
 
                 _appContext.SaveChanges();
                 model.ISuccess = true;
-                model.Message = " Employee records removed succesfully";
+                model.Message = "Student records removed succesfully";
             }
 
             catch (Exception ex)
