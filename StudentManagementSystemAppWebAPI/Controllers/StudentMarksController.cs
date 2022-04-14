@@ -110,7 +110,7 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         [HttpDelete]
 
         [Route("[action]")]
-        public IActionResult DeleteStudentByStuID(int stuid)
+        public IActionResult DeleteStudentMarkstById(int stuid)
         {
             _Logger.LogInformation("student endpoint starts");
 
