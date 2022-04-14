@@ -49,7 +49,7 @@ namespace StudentManagementSystemAppWebAPI.Controllers
         [HttpDelete]
 
         [Route("[action]")]
-        public IActionResult DeleteStudentByEmpId(int stuid)
+        public IActionResult DeleteStudentById(int stuid)
         {
             _Logger.LogInformation("student endpoint starts");
 
@@ -75,7 +75,7 @@ namespace StudentManagementSystemAppWebAPI.Controllers
 
         [HttpGet]
         [Route("[action]/stuid")]
-        public ActionResult SearcStudentById(int stuid)
+        public ActionResult SearchStudentById(int stuid)
         {
             _Logger.LogInformation("student endpoint starts");
             Student stu;
